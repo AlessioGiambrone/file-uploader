@@ -1,0 +1,154 @@
+<!doctype html>
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="file-uploader">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-weight: normal;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+      }
+      paper-button {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-weight: normal;
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+      }
+      paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+        };
+      }
+    </style>
+
+    <template is="dom-if" if="[[!native_element]]">
+        <paper-button on-click="buttonClick" class="indigo" raised>[[innerText]]</paper-button>
+    </template>
+    <template is="dom-if" if="[[native_element]]">
+        [[innerText]]
+    </template>
+    <input
+        accept="[[accept]]"
+        id="fileInput"
+        type="file"
+        on-change="filesLoaded"
+        multiple
+        ></input>
+  </template>
+
+  <script>
+    /**
+     * # `file-uploader`
+     * 
+     * An element that uploads one or more files to the browser
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FileUploader extends Polymer.Element {
+      static get is() { return 'file-uploader'; }
+      static get properties() {
+        return {
+          /** The label of the button. **/
+          innerText: {
+            type: String
+          },
+          /** The array containing all the files uploaded from the user **/
+          fileList: {
+            type: Array,
+            value: [],
+          },
+          /** Accepted types of files, as written for a normal HTML
+           * `<input type="file">` tag.
+           *
+           * example: `image/*` or `.txt`
+           **/
+          accept: {
+            type: String,
+            value: '*',
+          },
+          /** How the files should be readed as after being loaded.
+            *
+            * Available options are:
+            * - Text (default)
+            * - ArrayBuffer
+            * - BinaryString
+            * - DataUrl
+            * 
+            * Case here **is** important.
+            **/
+          parse_as: {
+              type: String,
+              value: 'Text'
+          },
+          /** If this attribute is true, the element will use a navite HTML tag
+            * instead of a paper-button.
+            **/
+          native_element: {
+              type: Boolean,
+              value: false
+          }
+        };
+      }
+      connectedCallback() {
+        super.connectedCallback();
+
+        this.innerText = this.textContent;
+        this.$.fileInput.style.display = this.native_element ? 'block':'none';
+      }
+
+      buttonClick(){
+        this.$.fileInput.click();
+      }
+
+      /**
+        * Reads all the files selected by the user with the 
+        * [FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader)
+        * method `readAs$TYPE`, with `$TYPE` specified in the `parse_as`
+        * attribute.
+        *
+        * After a file is readed, its content is pushed in the `fileList` array
+        * and an `uploader-newfile` is fired.
+        */
+      filesLoaded() {
+        var files = this.$.fileInput.files;
+        for ( var i = 0; i < files.length; i++){
+            var reader = new FileReader();
+            reader.addEventListener("loadend",
+                                    this._appendFile.bind(this),
+                                    false
+            );
+            reader['readAs'+this.parse_as](files[i]);
+        };
+      }
+
+      /**
+        * Appends a newly-readed file in the `fileList` array and fires
+        * a `uploader-newfile` event.
+        */
+      _appendFile(f) {
+        this.push('fileList', f.target.result)
+        /**
+          * Fired when one file is loaded; it will bubble.
+          *
+          * @event uploader-newfiles
+          */
+        this.dispatchEvent(
+            new CustomEvent('uploader-newfile', {bubbles: true, composed: true})
+        );
+      }
+    }
+
+    window.customElements.define(FileUploader.is, FileUploader);
+  </script>
+</dom-module>

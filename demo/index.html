@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>file-uploader demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../file-uploader.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic file-uploader demo</h3>
+      <demo-snippet>
+        <template>
+          <file-uploader>Upload your files</file-uploader>
+        </template>
+      </demo-snippet>
+      <demo-snippet>
+        <template>
+          <file-uploader native_element>
+            Upload your files with the native HTML input
+          </file-uploader>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
