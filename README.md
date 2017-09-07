@@ -9,6 +9,7 @@ An element that uploads one or more files to the browser
 <custom-element-demo>
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../polymer/polymer.js"></script>
     <link rel="import" href="file-uploader.html">
     <next-code-block></next-code-block>
   </template>
