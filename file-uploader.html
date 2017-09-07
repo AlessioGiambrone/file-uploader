@@ -59,11 +59,15 @@
       static get is() { return 'file-uploader'; }
       static get properties() {
         return {
-          /** The label of the button. **/
+          /** 
+            * The label of the button. 
+            **/
           innerText: {
             type: String
           },
-          /** The array containing all the files uploaded from the user **/
+          /** 
+            * The array containing all the files uploaded from the user 
+            **/
           fileList: {
             type: Array,
             value: [],
@@ -106,7 +110,10 @@
         this.innerText = this.textContent;
         this.$.fileInput.style.display = this.native_element ? 'block':'none';
       }
-
+      
+      /**
+        * Triggers a click on the button.
+        **/
       buttonClick(){
         this.$.fileInput.click();
       }
