@@ -22,7 +22,7 @@ Your application is already set up to be tested via [web-component-tester](https
 
 ## TODOs
 
-- [] tests
-- [] style
-- [] internationalization 
-- [] ARIA
+- tests
+- style
+- internationalization 
+- ARIA
