@@ -70,7 +70,8 @@
             **/
           fileList: {
             type: Array,
-            value: [],
+            value: function(){ return []; },
+            readOnly: true
           },
           /** Accepted types of files, as written for a normal HTML
            * `<input type="file">` tag.
